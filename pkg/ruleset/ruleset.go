@@ -1,5 +1,7 @@
 package ruleset
 
+import "fmt"
+
 type Ruleset struct {
 	CreatedResources   *CreateDeleteResourceChanges `yaml:"createdResources,omitempty"`
 	DestroyedResources *CreateDeleteResourceChanges `yaml:"destroyedResources,omitempty"`
@@ -69,6 +71,13 @@ type ResourceIdentifier struct {
 	Type string `yaml:"type,omitempty"`
 	// TODO: index
 	// Index interface{} `yaml:"index,omitempty"`
+}
+
+func (r *ResourceIdentifier) String() string {
+	if r.Name == "" {
+		return r.Type
+	}
+	return fmt.Sprintf("%s.%s", r.Type, r.Name)
 }
 
 type ResourceRules struct {
