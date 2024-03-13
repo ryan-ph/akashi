@@ -1,11 +1,26 @@
 package ruleset
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+	yaml "gopkg.in/yaml.v2"
+)
 
 type Ruleset struct {
 	CreatedResources   *CreateDeleteResourceChanges `yaml:"createdResources,omitempty"`
 	DestroyedResources *CreateDeleteResourceChanges `yaml:"destroyedResources,omitempty"`
 	UpdatedResources   *UpdateResourceChanges       `yaml:"updatedResources,omitempty"`
+}
+
+func Load(path string) (Ruleset, error) {
+	var ruleset Ruleset
+	file, err := ioutil.ReadFile(path)
+	if err != nil {
+		return ruleset, err
+	}
+
+	err = yaml.Unmarshal(file, &ruleset)
+	return ruleset, err
 }
 
 type CreateDeleteResourceChanges struct {

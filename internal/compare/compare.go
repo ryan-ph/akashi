@@ -1,12 +1,9 @@
 package compare
 
 import (
-	"io/ioutil"
-
 	"github.com/drlau/akashi/pkg/compare"
 	"github.com/drlau/akashi/pkg/plan"
 	"github.com/drlau/akashi/pkg/ruleset"
-	yaml "gopkg.in/yaml.v2"
 )
 
 type Comparer interface {
@@ -22,13 +19,7 @@ type ComparerSet struct {
 
 func NewComparerSet(path string) (ComparerSet, error) {
 	result := ComparerSet{}
-	rulesetFile, err := ioutil.ReadFile(path)
-	if err != nil {
-		return result, err
-	}
-
-	var rs ruleset.Ruleset
-	err = yaml.Unmarshal(rulesetFile, &rs)
+	rs, err := ruleset.Load(path)
 	if err != nil {
 		return result, err
 	}
