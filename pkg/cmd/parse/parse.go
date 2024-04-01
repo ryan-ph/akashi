@@ -2,9 +2,17 @@ package parse
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/thediveo/enumflag/v2"
+)
+
+type FormatOption enumflag.Flag
+
+const (
+	TerraformFlags FormatOption = iota
 )
 
 type ParseOptions struct {
+	Format int
 }
 
 func NewCmd() *cobra.Command {
