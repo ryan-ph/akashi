@@ -29,7 +29,11 @@ func getUnnamedResources(rs []ruleset.Resource) []*ruleset.ResourceIdentifier {
 func Validate(rs ruleset.Ruleset) *ValidateResult {
 	var res *ValidateResult
 	if rs.CreatedResources.RequireName {
-		ids := getUnnamedResources(rs.CreatedResources.Resources)
+		var created []ruleset.Resource
+		for _, createdR := range rs.CreatedResources.Resources {
+			created = append(created, createdR)
+		}
+		ids := getUnnamedResources(created)
 		&res.InvalidChangedResources = ids
 	}
 	return res
