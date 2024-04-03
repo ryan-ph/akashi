@@ -7,7 +7,7 @@ import (
 )
 
 type Resource interface {
-	ID() ResourceIdentifier
+	ID() *ResourceIdentifier
 }
 
 type Ruleset struct {
@@ -31,7 +31,7 @@ type CreateDeleteResourceChanges struct {
 	Resources []CreateDeleteResourceChange `yaml:"resources"`
 }
 
-func (r *CreateDeleteResourceChange) ID() *ResourceIdentifier {
+func (r CreateDeleteResourceChange) ID() *ResourceIdentifier {
 	return &r.ResourceIdentifier
 }
 
@@ -64,7 +64,7 @@ type UpdateResourceChange struct {
 	After  *ResourceRules `yaml:"after,omitempty"`
 }
 
-func (r *UpdateResourceChange) ID() *ResourceIdentifier {
+func (r UpdateResourceChange) ID() *ResourceIdentifier {
 	return &r.ResourceIdentifier
 }
 
