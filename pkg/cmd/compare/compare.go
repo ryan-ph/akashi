@@ -18,10 +18,20 @@ type CompareOptions struct {
 func NewCmdCompare() *cobra.Command {
 	opts := &CompareOptions{}
 	cmd := &cobra.Command{
-		Use:   "compare <path to ruleset>",
+		Use:   "compare <path to ruleset ...>",
 		Short: "Validate silently",
-		Long:  `Validate "terraform plan" changes against a ruleset, exiting with code 0 if ok`,
-		Args:  cobra.ExactArgs(1),
+		Long:  `Validate "terraform plan" changes against 1 or more rulesets, exiting with code 0 if ok.
+If more than one ruleset is provided, the default compare options must be the same.`,
+
+		// NOTE: We explicitly do not set Args with MinimumNArgs(1) since that
+		// will not print the help message.
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			if len(args) == 0 {
+				cmd.Help()
+				os.Exit(1)
+			}
+			return nil
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			comparers, err := compare.NewComparerSet(args[0])
 			if err != nil {
